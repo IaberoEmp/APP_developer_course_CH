@@ -1,0 +1,122 @@
+[
+  {
+    "id": 0,
+    "title": "smartphones",
+    "store": "Electronics",
+    "thumbnail": "https://i.dummyjson.com/data/products/100/thumbnail.jpg"
+  },
+  {
+    "id": 1,
+    "title": "laptops",
+    "store": "Electronics",
+    "thumbnail": "https://i.dummyjson.com/data/products/100/thumbnail.jpg"
+  },
+  {
+    "id": 2,
+    "title": "fragrances",
+    "store": "Pharmacy",
+    "thumbnail": "https://i.dummyjson.com/data/products/100/thumbnail.jpg"
+  },
+  {
+    "id": 3,
+    "title": "skincare",
+    "store": "Pharmacy",
+    "thumbnail": "https://i.dummyjson.com/data/products/100/thumbnail.jpg"
+  },
+  {
+    "id": 4,
+    "title": "groceries",
+    "store": "Market",
+    "thumbnail": "https://i.dummyjson.com/data/products/100/thumbnail.jpg"
+  },
+  {
+    "id": 5,
+    "title": "home-decoration",
+    "store": "Furnitres",
+    "thumbnail": "https://i.dummyjson.com/data/products/100/thumbnail.jpg"
+  },
+  {
+    "id": 6,
+    "title": "furniture",
+    "store": "Furnitres",
+    "thumbnail": "https://i.dummyjson.com/data/products/100/thumbnail.jpg"
+  },
+  {
+    "id": 7,
+    "title": "tops",
+    "store": "Fashion",
+    "thumbnail": "https://i.dummyjson.com/data/products/100/thumbnail.jpg"
+  },
+  {
+    "id": 8,
+    "title": "womens-dresses",
+    "store": "Fashion",
+    "thumbnail": "https://i.dummyjson.com/data/products/100/thumbnail.jpg"
+  },
+  {
+    "id": 9,
+    "title": "womens-shoes",
+    "store": "Fashion",
+    "thumbnail": "https://i.dummyjson.com/data/products/100/thumbnail.jpg"
+  },
+  {
+    "id": 10,
+    "title": "mens-shirts",
+    "store": "Fashion",
+    "thumbnail": "https://i.dummyjson.com/data/products/100/thumbnail.jpg"
+  },
+  {
+    "id": 11,
+    "title": "mens-shoes",
+    "store": "Fashion",
+    "thumbnail": "https://i.dummyjson.com/data/products/100/thumbnail.jpg"
+  },
+  {
+    "id": 12,
+    "title": "mens-watches",
+    "store": "Fashion",
+    "thumbnail": "https://i.dummyjson.com/data/products/100/thumbnail.jpg"
+  },
+  {
+    "id": 13,
+    "title": "womens-watches",
+    "store": "Fashion",
+    "thumbnail": "https://i.dummyjson.com/data/products/100/thumbnail.jpg"
+  },
+  {
+    "id": 14,
+    "title": "womens-bags",
+    "store": "Fashion",
+    "thumbnail": "https://i.dummyjson.com/data/products/100/thumbnail.jpg"
+  },
+  {
+    "id": 15,
+    "title": "womens-jewellery",
+    "store": "Fashion",
+    "thumbnail": "https://i.dummyjson.com/data/products/100/thumbnail.jpg"
+  },
+  {
+    "id": 16,
+    "title": "sunglasses",
+    "store": "Fashion",
+    "thumbnail": "https://i.dummyjson.com/data/products/100/thumbnail.jpg"
+  },
+  {
+    "id": 17,
+    "title": "automotive",
+    "store": "Concessionaire",
+    "thumbnail": "https://i.dummyjson.com/data/products/100/thumbnail.jpg"
+  },
+  {
+    "id": 18,
+    "title": "motorcycle",
+    "store": "Concessionaire",
+    "thumbnail": "https://i.dummyjson.com/data/products/100/thumbnail.jpg"
+  },
+  {
+    "id": 19,
+    "title": "lighting",
+    "store": "Furnitres",
+    "thumbnail": "https://i.dummyjson.com/data/products/100/thumbnail.jpg"
+  }
+]
