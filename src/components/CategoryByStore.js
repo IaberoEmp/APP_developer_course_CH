@@ -9,7 +9,3 @@ const CategoryByStore = ({item}) => {
 }
 
 export default CategoryByStore
-
-const styles = StyleSheet.create({
-  
-})
