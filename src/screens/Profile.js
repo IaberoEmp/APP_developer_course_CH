@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     },
     profileDetails: {
       borderWidth:2,
-      flex:0.75,
+      flex:0.70,
       borderRadius:10,
       padding:5
     },

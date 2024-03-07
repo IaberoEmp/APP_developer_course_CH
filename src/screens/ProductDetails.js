@@ -1,22 +1,18 @@
 import { StyleSheet, Text, View, FlatList,Image, Pressable,Dimensions } from 'react-native'
-import React, { useEffect,useState } from 'react'
-import products from '../utils/data/products.json'
+import React from 'react'
 import colors from '../utils/globals/colors'
 import fonts from '../utils/globals/fonts'
 import Counter from '../components/Counter'
+import { useGetProductsQuery } from '../app/services/shop'
 
 const windowWidth = Dimensions.get('window').width; // Obtengo el ancho de la ventana del dispositivo
 
 const ProductDetails = ({route}) => {
   
   const {productId} = route.params
-  const [product,setProduct] = useState({})
-  
+  const {data:product,isLoading} = useGetProductsQuery(productId)
 
-  useEffect(()=>{
-    const productClicked = products.find(product => product.id === productId)
-    setProduct(productClicked)
-  },[productId])
+  if(isLoading) return <View><Text>Cargando...</Text></View>
 
   const carouselImages = ({item}) => {
     return(
