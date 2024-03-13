@@ -7,6 +7,7 @@ import InputForm from '../components/InputForm'
 import { useRegisterMutation } from '../app/services/auth'
 import { registerUser } from '../features/auth/authSlice'
 import { useDispatch } from 'react-redux'
+import { registerSchema } from '../utils/validations/authSchema'
 
 const SignUp = ({navigation}) => {
     
@@ -17,8 +18,13 @@ const SignUp = ({navigation}) => {
     const [triggerRegister] = useRegisterMutation()
 
     const onSubmit = async ()=> {
-        const {data} = await triggerRegister({email,password})
-        dispatch(registerUser({email:data.email,idToken:data.idToken}))
+        try {
+            registerSchema.validateSync({email,password,confirmPassword})
+            const {data} = await triggerRegister({email,password})
+            dispatch(registerUser({email:data.email,idToken:data.idToken}))
+        } catch (error) {
+            console.log(error.message)
+        }
     }
 
     return (
