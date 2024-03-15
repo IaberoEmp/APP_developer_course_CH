@@ -7,6 +7,7 @@ import SubmitButton from '../components/SubmitButton'
 import { useLoginMutation } from '../app/services/auth'
 import { registerUser } from '../features/auth/authSlice'
 import { useDispatch } from 'react-redux'
+import { registerSchema, loginSchema} from '../utils/validations/authSchema'
 
 const Login = ({navigation}) => {
     
@@ -14,11 +15,30 @@ const Login = ({navigation}) => {
     const [email,setEmail] = useState("")
     const [password,setPassword] = useState("")
     const [triggerLogin] = useLoginMutation()
+    const [errorEmailSchema,setErrorEmailSchema] = useState("")
+    const [errorPasswordSchema,setErrorPasswordSchema] = useState("")
 
     const onSubmit = async ()=> {
-        const {data} = await triggerLogin({email,password})
-        console.log({email:data.email,idToken:data.idToken})
-        dispatch(registerUser({email:data.email,idToken:data.idToken}))
+        try {
+            //confirmPasswordSchema.validateSync({confirmPassword})
+            loginSchema.validateSync({email,password})
+            //passwordSchema.validateSync({password})
+            const {data} = await triggerLogin({email,password})
+            dispatch(registerUser({email:data.email,idToken:data.idToken,localId:data.localId}))
+        } catch (error) {
+            setErrorEmailSchema("")
+            setErrorPasswordSchema("")
+            switch(error.path){
+                case "email":
+                    setErrorEmailSchema(error.message)
+                    break
+                case "password":
+                    setErrorPasswordSchema(error.message)
+                    break
+                default:
+                    break
+            }
+        }
     }
 
 
@@ -33,14 +53,14 @@ const Login = ({navigation}) => {
                     value={email}
                     onChangeText={(t)=>setEmail(t)}
                     isSecure={false}
-                    error=""
+                    error={errorEmailSchema}
                 />
                 <InputForm
                     label='Password'
                     value={password}
                     onChangeText={(t)=>setPassword(t)}
                     isSecure={true}
-                    error=""
+                    error={errorPasswordSchema}
                 />
                 <SubmitButton onPress={onSubmit} title='Log In'/>
                 <Text style={styles.sub}>Not have an account?</Text>

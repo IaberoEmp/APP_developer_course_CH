@@ -7,7 +7,7 @@ import InputForm from '../components/InputForm'
 import { useRegisterMutation } from '../app/services/auth'
 import { registerUser } from '../features/auth/authSlice'
 import { useDispatch } from 'react-redux'
-import { registerSchema } from '../utils/validations/authSchema'
+import { registerSchema, loginSchema} from '../utils/validations/authSchema'
 
 const SignUp = ({navigation}) => {
     
@@ -16,14 +16,34 @@ const SignUp = ({navigation}) => {
     const [password,setPassword] = useState("")
     const [confirmPassword,setConfirmPassword] = useState("")
     const [triggerRegister] = useRegisterMutation()
+    const [errorEmailSchema,setErrorEmailSchema] = useState("")
+    const [errorPasswordSchema,setErrorPasswordSchema] = useState("")
+    const [errorConfirmPasswordSchema,setErrorConfirmPasswordSchema] = useState("")
 
     const onSubmit = async ()=> {
         try {
+            //confirmPasswordSchema.validateSync({confirmPassword})
             registerSchema.validateSync({email,password,confirmPassword})
+            //passwordSchema.validateSync({password})
             const {data} = await triggerRegister({email,password})
-            dispatch(registerUser({email:data.email,idToken:data.idToken}))
+            dispatch(registerUser({email:data.email,idToken:data.idToken,localId:data.localId}))
         } catch (error) {
-            console.log(error.message)
+            setErrorEmailSchema("")
+            setErrorConfirmPasswordSchema("")
+            setErrorPasswordSchema("")
+            switch(error.path){
+                case "email":
+                    setErrorEmailSchema(error.message)
+                    break
+                case "password":
+                    setErrorPasswordSchema(error.message)
+                    break
+                case "confirmPassword":
+                    setErrorConfirmPasswordSchema(error.message)
+                    break
+                default:
+                    break
+            }
         }
     }
 
@@ -38,21 +58,21 @@ const SignUp = ({navigation}) => {
                     value={email}
                     onChangeText={(t)=>setEmail(t)}
                     isSecure={false}
-                    error=""
+                    error={errorEmailSchema}
                 />
                 <InputForm
                     label='Password'
                     value={password}
                     onChangeText={(t)=>setPassword(t)}
                     isSecure={true}
-                    error=""
+                    error={errorPasswordSchema}
                 />
                 <InputForm
                     label='Confirm Password'
                     value={confirmPassword}
                     onChangeText={(t)=>setConfirmPassword(t)}
                     isSecure={true}
-                    error=""
+                    error={errorConfirmPasswordSchema}
                 />
                 <SubmitButton onPress={onSubmit} title='Sign Up'/>
                 <Text style={styles.sub}>Have an account?</Text>

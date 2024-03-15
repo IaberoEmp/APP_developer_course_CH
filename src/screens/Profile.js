@@ -1,22 +1,29 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import colors from '../utils/globals/colors'
 import fonts from '../utils/globals/fonts'
+import AddButton from '../components/AddButton'
+import { useSelector } from 'react-redux'
+import { useGetProfileImageQuery } from '../app/services/profile'
+import { useFocusEffect } from '@react-navigation/native'
 
-const Profile = () => {
+const Profile = ({navigation}) => {
+
+  const localId = useSelector((state)=>state.auth.localId)
+  const {data} = useGetProfileImageQuery(localId)
+
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Image
-          source={{ uri: 'https://via.placeholder.com/150' }}//Dummy por ahora.
+          source={data ? {uri:data.profileImage} : { uri: 'https://via.placeholder.com/150' }}//Dummy por ahora.
           style={styles.profilePic}
         />
         <Text style={styles.userName}>Nombre de Usuario</Text>
         <View style={styles.actionButtons}>
           {/*Probando otros botonos diferentes a Pressable*/}
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Editar</Text>
-          </TouchableOpacity>
+          <AddButton title={"Editar"} onPress={()=>navigation.navigate("EditProfile")}/>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Configuración</Text>
           </TouchableOpacity>
@@ -48,6 +55,7 @@ const styles = StyleSheet.create({
       height: 150,
       borderRadius: 75,
       marginBottom: 10,
+      marginTop:35
     },
     userName: {
       fontSize: 24,
@@ -73,7 +81,6 @@ const styles = StyleSheet.create({
     },
     infoText: {
       fontSize: 18,
-      marginBottom:5,
       fontFamily:fonts.PacificoRegular
     },
     profileDetails: {

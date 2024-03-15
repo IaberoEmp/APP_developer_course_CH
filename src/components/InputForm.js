@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
         color:"white"
     },
     error:{
-        fontSize:16,
+        fontSize:10,
         color:"red",
         fontFamily:fonts.PacificoRegular,
         marginLeft:20,

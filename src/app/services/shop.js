@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export const shopApi = createApi({
     reducerPath:"shopApi",//Este seria el nombre que le vamos a poner al estado global.
     baseQuery:fetchBaseQuery({
-        baseUrl:'https://miiaappcoder-default-rtdb.firebaseio.com/'
+        baseUrl:'https://miiaappcoder-default-rtdb.firebaseio.com'
     }),//Aca determino la url base a donde ir a consultar a la base
     endpoints:(builder)=>({
         getProducts:builder.query({
