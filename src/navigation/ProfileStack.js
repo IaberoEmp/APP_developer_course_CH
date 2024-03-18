@@ -2,7 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Profile from '../screens/Profile'
 import Header from '../components/Header'
 import EditProfile from '../screens/EditProfile'
-import { useSelector } from 'react-redux'
+import LocationSelector from '../screens/LocationSelector'
 
 const Stack = createNativeStackNavigator()
 
@@ -15,7 +15,7 @@ const ProfileStack = () => {
                     return {
                         header: ()=> {
                             return <Header
-                                tittle='Perfil'
+                                tittle='User Profile'
                                 navigation={navigation}
                             />
                         }
@@ -24,6 +24,7 @@ const ProfileStack = () => {
             >
                 <Stack.Screen name='Profile' component={Profile}/>
                 <Stack.Screen name='EditProfile' component={EditProfile}/>
+                <Stack.Screen name='LocationSelector' component={LocationSelector}/>
             </Stack.Navigator>
     )
 }

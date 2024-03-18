@@ -5,8 +5,9 @@ import fonts from '../utils/globals/fonts'
 import AddButton from '../components/AddButton'
 import { MaterialIcons } from '@expo/vector-icons'
 import * as ImagePicker from 'expo-image-picker'
-import { useGetProfileImageQuery, usePutProfileImageMutation } from '../app/services/profile'
+import { useGetProfileImageQuery, useGetUserLocationQuery, usePutProfileImageMutation } from '../app/services/profile'
 import { useSelector } from 'react-redux'
+
 
 const EditProfile = ({navigation}) => {
 
@@ -14,9 +15,14 @@ const EditProfile = ({navigation}) => {
     const [triggerProfileImage] = usePutProfileImageMutation()
     const localId = useSelector((state)=>state.auth.localId)
     const {data,isSuccess} = useGetProfileImageQuery(localId)
-
+    const {data:locationData} = useGetUserLocationQuery(localId)
+    
     useEffect(()=>{
         if(isSuccess && data) setProfileImage(data.profileImage)
+    },[isSuccess,data])
+
+    useEffect(()=>{
+        if(locationData) {locationData}
     },[isSuccess,data])
 
     const pickProfileImage = async () => {
@@ -37,6 +43,8 @@ const EditProfile = ({navigation}) => {
         triggerProfileImage({profileImage,localId})
         navigation.navigate("Profile")
     }
+
+    const LocationEdit = ()=> navigation.navigate("LocationSelector")
 
 
     return (
@@ -60,7 +68,17 @@ const EditProfile = ({navigation}) => {
             </View>
             <View style={styles.profileInfo}>
                 <Text style={styles.infoText}>Correo: usuario@example.com</Text>
-                <Text style={styles.infoText}>Ubicación: Ciudad, País</Text>
+                <View style={styles.addLocation}>
+                    <Text style={styles.infoText}>Ubicación</Text>
+                    <View style={styles.editLocationButton}>
+                        <Pressable onPress={LocationEdit}>
+                            <MaterialIcons name='edit' size={25} color={colors.black1}/>
+                        </Pressable>
+                    </View>
+                </View>
+                <Text style={styles.subInfoText}>{locationData.streetNumber} {locationData.street}, {locationData.city}, {locationData.postalCode}</Text>
+                <Text style={styles.subInfoText}>{locationData.subRegion}, {locationData.region}</Text>
+                <Text style={styles.subInfoText}>{locationData.country}</Text>
             </View>
             <View style={styles.profileDetails}>
                 <Text style={styles.profileDetailsText}>Aca se pueden agregar mas datellas como por ejemplo ultimas ordenes o algunas estadisitcas suyas en la app</Text>
@@ -90,12 +108,11 @@ const styles = StyleSheet.create({
         fontFamily:fonts.LobsterRegular,
     },
     profileInfo: {
-        gap:5,
+        gap:2,
         alignItems:'center'
     },
     infoText: {
         fontSize: 18,
-        marginBottom:5,
         fontFamily:fonts.PacificoRegular
     },
     profileDetails: {
@@ -116,6 +133,19 @@ const styles = StyleSheet.create({
         marginTop:-30,
         marginBottom:10,
         alignItems:'flex-end'
+    },
+    addLocation:{
+        alignItems:'center',
+        flexDirection:'row',
+        marginRight:-40
+    },
+    editLocationButton:{
+        alignItems:'center',
+        marginLeft:20
+    },
+    subInfoText:{
+        fontSize: 15,
+        fontFamily:fonts.SatisfyRegular
     }
 });
 

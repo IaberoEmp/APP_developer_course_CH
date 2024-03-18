@@ -15,10 +15,10 @@ export const profileApi = createApi({
             query:(localId) => `/profile/${localId}.json`
         }),
         putUserLocation:builder.mutation({
-            query:({localId,locationFormatted})=> ({
+            query:({localId,locationData})=> ({
                 url:`/userLocation/${localId}.json`,
                 method:"PUT",
-                body:locationFormatted
+                body:locationData
 
             })
         }),

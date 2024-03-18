@@ -6,6 +6,7 @@ import { setupListeners } from '@reduxjs/toolkit/query'
 import { authApi } from "./services/auth"
 import authReducer from "../features/auth/authSlice"
 import { profileApi } from "./services/profile"
+import { ordersApi } from "./services/orders"
 
 export const store = configureStore({
     reducer:{
@@ -15,9 +16,10 @@ export const store = configureStore({
         [shopApi.reducerPath]:shopApi.reducer,//Esto la configuracion de la documentacion.
         [authApi.reducerPath]:authApi.reducer,
         [profileApi.reducerPath]:profileApi.reducer,
+        [ordersApi.reducerPath]:ordersApi.reducer,
     },
     middleware: (getDefaultMiddleware) => 
-    getDefaultMiddleware().concat(shopApi.middleware,authApi.middleware,profileApi.middleware), //Config de la documentacion de redux toolkit
+    getDefaultMiddleware().concat(shopApi.middleware,authApi.middleware,profileApi.middleware,ordersApi.middleware), //Config de la documentacion de redux toolkit
 })
 
 setupListeners(store.dispatch)

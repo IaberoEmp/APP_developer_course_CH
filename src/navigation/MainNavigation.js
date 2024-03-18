@@ -8,11 +8,6 @@ const MainNavigation = () => {
 
     const user = useSelector((state)=>state.auth)
 
-    useEffect(()=>{
-        console.log(user.idToken)
-        console.log(user)
-    },[user])
-
     return (
         <NavigationContainer>
             {user.idToken ? <TabNavigation/> : <AuthStack/>}
