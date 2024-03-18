@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, Alert } from 'react-native';
+import { StyleSheet, View, Alert, Pressable, TextInput } from 'react-native';
 import * as Location from 'expo-location';
 import MapPreview from '../components/MapPreview';
 import AddButton from '../components/AddButton';
@@ -8,6 +8,8 @@ import colors from '../utils/globals/colors';
 import fonts from '../utils/globals/fonts';
 import { useSelector } from 'react-redux';
 import { usePutUserLocationMutation } from '../app/services/profile';
+import { Feather } from '@expo/vector-icons'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const LocationSelector = ({ navigation }) => {
     
@@ -25,25 +27,36 @@ const LocationSelector = ({ navigation }) => {
     const [streetNumber, setStreetNumber] = useState(null);
     const [district, setDistrict] = useState(null);
     const [isoCountryCode, setIsoCountryCode] = useState(null);
+    const [customAddress, setCustomAddress] = useState(null);
     const [triggerUserLocation] = usePutUserLocationMutation()
+    const [isSearching,setIsSearching] = useState(false)
 
-
+    const handlerSearchingAddress = async () => {
+        setIsSearching(true)
+        const result = await Location.geocodeAsync(customAddress)
+        if (result.length>0) {
+            const {latitude,longitude} = result[0]
+            setLocation({latitude,longitude})
+        } else {
+            Alert.alert('Error','Address not found')
+        }
+        setIsSearching(false)
+    }
 
     useEffect(() => {
         (async () => {
-            let { status } = await Location.requestForegroundPermissionsAsync();
+            let { status } = await Location.requestForegroundPermissionsAsync()
             if (status !== 'granted') {
-                setErrorMsg('Permission to access location was denied');
+                setErrorMsg('Permission to access location was denied')
                 setIsLoading(false);
                 return;
             }
-
-            let location = await Location.getCurrentPositionAsync({});
+            let location = await Location.getCurrentPositionAsync({})
             setLocation({
                 latitude: location.coords.latitude,
                 longitude: location.coords.longitude,
             });
-            setIsLoading(false);
+            setIsLoading(false)
         })();
     }, []);
 
@@ -55,6 +68,8 @@ const LocationSelector = ({ navigation }) => {
                     longitude: location.longitude,
                 });
                 if (addressResponse.length > 0) {
+                    const { street, city, postalCode, country } = addressResponse[0]
+                    setCustomAddress(`${street}, ${city}, ${postalCode}, ${country}`)
                     setAdrress(addressResponse[0].formattedAddress)
                     setCountry(addressResponse[0].country)
                     setCity(addressResponse[0].city)
@@ -74,15 +89,19 @@ const LocationSelector = ({ navigation }) => {
     const onConfirmAddress = async () => {
         
         const locationData = {
-            address,street,streetNumber,postalCode,country,city,region,subRegion,district,isoCountryCode,location
+            address,street,streetNumber,postalCode,country,city,region,subRegion,district,isoCountryCode,location,customAddress
         }
-        
         await triggerUserLocation({localId,locationData})
         navigation.navigate('EditProfile');
     };
 
     return (
-        <View style={styles.mainContainer}>
+        <KeyboardAwareScrollView 
+        contentContainerStyle={styles.mainContainer}
+        style={{flex:1}}
+        resetScrollToCoords={{x:0,y:0}}
+        scrollEnabled={true}
+        >
             <View style={styles.addButton}>
                 <AddButton title="Add Location" onPress={onConfirmAddress} />
             </View>
@@ -99,10 +118,20 @@ const LocationSelector = ({ navigation }) => {
                     )}
                 </View>
                 <View style={styles.locationInfo}>
-                    <Text style={styles.text}>{address}</Text>
+                    <TextInput 
+                        style={styles.text}
+                        value={customAddress}
+                        onChangeText={setCustomAddress}
+                        placeholder='Enter Address: [street] [street_number], [city], [postal_code], [country]'
+                        multiline
+                        numberOfLines={2}
+                    />
+                    <Pressable onPress={handlerSearchingAddress}>
+                        <Feather name="search" size={30} color="black"/>
+                    </Pressable>
                 </View>
             </View>
-        </View>
+        </KeyboardAwareScrollView>
     );
 };
 
@@ -116,12 +145,16 @@ const styles = StyleSheet.create({
         justifyContent:'center'
     },
     text: {
-        fontSize: 20,
-        fontFamily:fonts.LobsterRegular
+        fontSize: 16,
+        fontFamily:fonts.PacificoRegular,
     },
     locationInfo:{
         flexDirection:'row',
-        gap:15
+        width:'80%',
+        justifyContent:'center',
+        alignItems:'center',
+        marginLeft:10,
+        marginRight:10
     },
     mapContainer:{
         width:'100%',
@@ -144,7 +177,6 @@ const styles = StyleSheet.create({
         alignItems:'flex-end'
     },
     mainContainer:{
-        flex: 1,
         paddingTop:10
     }
 });
